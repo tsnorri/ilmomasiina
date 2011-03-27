@@ -1,80 +1,46 @@
--- phpMyAdmin SQL Dump
--- version 2.11.9.4
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Mar 11, 2009 at 10:05 AM
--- Server version: 5.0.45
--- PHP Version: 5.1.6
+SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO,ANSI_QUOTES,ERROR_FOR_DIVISION_BY_ZERO,STRICT_ALL_TABLES,TRADITIONAL,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,PIPES_AS_CONCAT,REAL_AS_FLOAT';
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
---
--- Database: `Athene`
---
+CREATE TABLE "ilmo_machine" (
+	"id" BIGINT PRIMARY KEY auto_increment,
+	"opens" DATETIME NOT NULL,
+	"closes" DATETIME NOT NULL,
+	"title" VARCHAR(255) NOT NULL,
+	"description" TEXT,
+	"eventdate" DATETIME NOT NULL,
+	"password" varchar(8) default NULL, -- FIXME cleartext passwords?
+	"send_confirmation" BIT(1) NOT NULL DEFAULT b'0',
+	"confirmation_message" TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `ilmo_masiinat`
---
+CREATE TABLE "ilmo_question" (
+	"id" BIGINT PRIMARY KEY auto_increment,
+	"machine_id" BIGINT NOT NULL,
+	"question" TEXT NOT NULL,
+	"type" TEXT NOT NULL,
+	"options" TEXT NOT NULL,
+	"public" BIT(1) NOT NULL default b'0',
+	"required" BIT(1) NOT NULL default b'0',
+	CONSTRAINT "ilmo_machine_fkey" FOREIGN KEY ("machine_id") REFERENCES "ilmo_machine" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `ilmo_masiinat` (
-	`id` bigint(20) unsigned NOT NULL auto_increment,
-	`opens` datetime NOT NULL default '0000-00-00 00:00:00',
-	`closes` datetime NOT NULL default '0000-00-00 00:00:00',
-	`title` text NOT NULL,
-	`description` text,
-	`eventdate` datetime NOT NULL default '0000-00-00 00:00:00',
-	`password` varchar(8) default NULL,
-	`send_confirmation` tinyint(4) NOT NULL default '0',
-	`confirmation_message` text,
-	UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM	 DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
+CREATE TABLE "ilmo_user" (
+	"id" BIGINT PRIMARY KEY auto_increment,
+	"machine_id" BIGINT NOT NULL,
+	"id_string" VARCHAR(255) NOT NULL, -- FIXME what is this?
+	"time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"confirmed" BIT(1) NOT NULL DEFAULT b'0',
+	CONSTRAINT "ilmo_machine_fkey" FOREIGN KEY ("machine_id") REFERENCES "ilmo_machine" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Table structure for table `ilmo_questions`
---
 
-CREATE TABLE IF NOT EXISTS `ilmo_questions` (
-	`id` bigint(20) unsigned NOT NULL auto_increment,
-	`ilmo_id` int(11) NOT NULL default '0',
-	`question` text NOT NULL,
-	`type` text NOT NULL,
-	`options` text NOT NULL,
-	`public` tinyint(1) NOT NULL default '0',
-	`required` tinyint(1) NOT NULL default '0',
-	UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM	 DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ilmo_users`
---
-
-CREATE TABLE IF NOT EXISTS `ilmo_users` (
-	`id` int(11) NOT NULL auto_increment,
-	`ilmo_id` int(11) NOT NULL default '0',
-	`id_string` text NOT NULL,
-	`time` datetime NOT NULL default '0000-00-00 00:00:00',
-	`confirmed` tinyint(4) NOT NULL default '0',
-	PRIMARY KEY	 (`id`)
-) ENGINE=MyISAM	 DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ilmo_answers`
---
-
-CREATE TABLE IF NOT EXISTS `ilmo_answers` (
-	`id` bigint(20) unsigned NOT NULL auto_increment,
-	`question_id` int(11) NOT NULL default '0',
-	`answer` text,
-	`user_id` int(11) default NULL,
-	UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM	 DEFAULT CHARSET=latin1;
-
+CREATE TABLE "ilmo_answer" (
+	"id" BIGINT PRIMARY KEY auto_increment,
+	"user_id" BIGINT NOT NULL,
+	"question_id" BIGINT NOT NULL,
+	"answer" TEXT DEFAULT NULL,
+	CONSTRAINT "ilmo_user_fkey" FOREIGN KEY ("user_id") REFERENCES "ilmo_user" ("id") ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT "ilmo_question_fkey" FOREIGN KEY ("question_id") REFERENCES "ilmo_question" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
