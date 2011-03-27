@@ -16,20 +16,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ilmo_answers`
---
-
-CREATE TABLE IF NOT EXISTS `ilmo_answers` (
-	`id` bigint(20) unsigned NOT NULL auto_increment,
-	`question_id` int(11) NOT NULL default '0',
-	`answer` text,
-	`user_id` int(11) default NULL,
-	UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM	 DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ilmo_masiinat`
 --
 
@@ -78,4 +64,17 @@ CREATE TABLE IF NOT EXISTS `ilmo_users` (
 	PRIMARY KEY	 (`id`)
 ) ENGINE=MyISAM	 DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ilmo_answers`
+--
+
+CREATE TABLE IF NOT EXISTS `ilmo_answers` (
+	`id` bigint(20) unsigned NOT NULL auto_increment,
+	`question_id` int(11) NOT NULL default '0',
+	`answer` text,
+	`user_id` int(11) default NULL,
+	UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM	 DEFAULT CHARSET=latin1;
 
