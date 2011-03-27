@@ -1,12 +1,11 @@
 <?php
 
-require_once("../classes/ErrorReportEnabler.php");
+/* Requirements */ 
 require_once("../classes/ConfirmationMail.php");
 require_once("../classes/Email.php");
 require_once("../classes/SignupGadget.php");
 require_once("../classes/Question.php");
 
-/* Requirements */ 
 require_once("../classes/Configurations.php");
 require_once("../classes/Page.php");
 require_once("../classes/Debugger.php");

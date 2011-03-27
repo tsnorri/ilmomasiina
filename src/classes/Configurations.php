@@ -1,7 +1,5 @@
 <?php
 
-// This enables full error reporting. Comment it when ilmomasiina is in product
-//require_once("ErrorReportEnabler.php");
 
 /**
  * Global configurations
@@ -72,10 +70,17 @@ class Configurations {
 		
 		// Enable full error reporting if $debugMode is true
 		if($this->debugMode){
-			require_once("ErrorReportEnabler.php");
+			$this->enableErrorReports ();
 		}
-		
 	}
+	
+	
+	function enableErrorReports(){
+		ini_set('display_errors','1');
+		ini_set('display_startup_errors','1');
+		error_reporting (E_ALL); 
+	}
+	
 	
 	/**
 	 * Checks that the configurations has been made properly

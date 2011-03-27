@@ -1,6 +1,5 @@
 <?php
 
-require_once("ErrorReportEnabler.php");
 require_once("Email.php");
 require_once("SignupGadget.php");
 

@@ -1,7 +1,6 @@
 <?php
 
 /* Requirements */
-require_once("classes/ErrorReportEnabler.php");
 require_once("classes/Configurations.php");
 require_once("classes/Request.php");
 require_once("classes/AdminPasswordProtector.php");
